@@ -6,3 +6,6 @@ Then program maps zip codes to geo-location coordinates and uses this data to pe
 The program returns centroids and also their statistical evaluation (IV /EV). 
 This is practical application of machine learning which would allow expanding business to decide where to place new branches of stores in different location knowing which age group they are willing to target.
 
+For the sake of simplification we will ignore zip codes with population which is less than 100 for targeted certain age group and we will treat it as a noise (since they are insignificant).
+
+
