@@ -24,11 +24,12 @@ public class Kmeans {
 	
 	//This method runs k-means algorithm and returns the results in form of an array of Strings which includes centroids location
 	public String[] runKmeans(){
-		
+		return null;
 	}
 
 	//This method returns string of statistics, which includes centroids IV/EV values and their evaluation
 	public String[] calculateStatistics(){
+		return null;
 		
 	}
 	

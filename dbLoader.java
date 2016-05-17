@@ -16,5 +16,6 @@ public class dbLoader {
 	public ArrayList<DataPoint> getDataPoints(String state){
 		//go through database and take each zipcode and divide its population by 100
 		//then the number you will get is the number of how many points with this zip code we need to create
+		return null;
 	}
 }
