@@ -43,7 +43,7 @@ public class KmeansGUI extends JFrame{
         algorithmMenu.addSeparator();
         
         //initializes menu item, adds a action listener to the menu item, and add the menu item to the menu
-	algorithmItem = new JMenuItem("Run Alogrithm");
+	algorithmItem = new JMenuItem("Run Algorithm");
         algorithmItem.addActionListener(km);
         algorithmMenu.add(algorithmItem);
         
