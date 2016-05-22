@@ -10,23 +10,23 @@ public class DataPoint {
 	private int label; //data label - to which cluster this point belongs to
 	
 	/*
-	 * @param zip	zip code of a given data point
+	 * @param	zip		zip code of a given data point
+	 * @param	lat		latitude of the zip code
+	 * @param 	lng 	longitude of the zip code 
 	 */
-	public DataPoint(String zip)
+	public DataPoint(String zip, double lat, double lng)
 	{
 		zipCode = zip;
-	}
-	
-	//
-	public void convertToGeoLocation(){
-		//TO-DO: read from file of geo-locations and map this zip code with x and y values.
-		//since longtitude on eastern hemisphere has negative value we need to add 180 to each x point. We will subtract it from the final result's x value
-		
+		y = lat;	//map latitude to x-coordinate
+		x = lng;	//map longtitude to y-coordinate
 	}
 	
 	//accessors
 	public double getX() { return x; }
 	public double getY() { return y; }
 	public String getZipCode() { return zipCode; }
+	public void setLabel(int l) { label = l; }
+	public int getLabel() { return label; }
+	
 
 }
