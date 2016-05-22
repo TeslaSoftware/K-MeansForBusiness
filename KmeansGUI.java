@@ -32,11 +32,11 @@ public class KmeansGUI extends JFrame{
     private void createAlgorithmMenu() {
         JMenuItem algorithmItem;//menu item variable that is used to add menu items to the menu
         JMenu algorithmMenu = new JMenu("Algorithm");//declares algorithm menu 
-        MenuHandler mh = new MenuHandler();//object of menu handler class that has a method that responds to the users click of the menu item
+        Kmeans km = new Kmeans();//object of kmeans class that has a method that responds to the users click of the menu item
         
         //initializes menu item, adds a action listener to the menu item, and add the menu item to the menu
         algorithmItem = new JMenuItem("Load Data");
-        algorithmItem.addActionListener(mh);
+        algorithmItem.addActionListener(km);
         algorithmMenu.add(algorithmItem);
 
         //draws a line to seperate between one menu item and another
@@ -44,7 +44,7 @@ public class KmeansGUI extends JFrame{
         
         //initializes menu item, adds a action listener to the menu item, and add the menu item to the menu
 	algorithmItem = new JMenuItem("Run Alogrithm");
-        algorithmItem.addActionListener(mh);
+        algorithmItem.addActionListener(km);
         algorithmMenu.add(algorithmItem);
         
         //adds the menu to the menu bar
