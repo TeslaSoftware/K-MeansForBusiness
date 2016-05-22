@@ -18,6 +18,7 @@ public class KmeansGUI extends JFrame{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	setJMenuBar(menuBar);
 	createAlgorithmMenu();
+	createRepeatMenu();
 	setVisible(true);
 	}
 	/*to do the algorithm first create Kmeans object
@@ -49,6 +50,20 @@ public class KmeansGUI extends JFrame{
         
         //adds the menu to the menu bar
         menuBar.add(algorithmMenu);
+    }
+     //create the repeat menu and adds it to the menu bar
+    private void createRepeatMenu() {
+        JMenuItem repeatItem;//menu item variable that is used to add menu items to the menu
+        JMenu repeatMenu = new JMenu("New Evaluation");//declares repeat menu 
+        Kmeans km = new Kmeans();//object of kmeans class that has a method that responds to the users click of the menu item
+        
+        //initializes menu item, adds a action listener to the menu item, and add the menu item to the menu
+        repeatItem = new JMenuItem("New Evaluation");
+        repeatItem.addActionListener(km);
+        repeatMenu.add(repeatItem);
+
+        //adds the menu to the menu bar
+        menuBar.add(repeatMenu);
     }
 	
 }
