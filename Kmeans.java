@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /*
  * Kmeans.java
@@ -17,19 +18,18 @@ public class Kmeans {
 	}
 	
 	//This method will get datapoints from dbLoader
-	public void loadData(String state){
+	public void loadData(HashMap<String, Boolean> states){
 		dbLoader db = new dbLoader();
-		data = db.getDataPoints(state);	
+		data = db.getDataPoints(states);	
 	}
 	
 	//This method runs k-means algorithm and returns the results in form of an array of Strings which includes centroids location
 	public String[] runKmeans(){
-		return null;
+		
 	}
 
 	//This method returns string of statistics, which includes centroids IV/EV values and their evaluation
-	public String[] calculateStatistics(){
-		return null;
+	public String[] getStatistics(){
 		
 	}
 	
