@@ -17,6 +17,7 @@ public class Kmeans {
 	public Kmeans(int clusters) {
 		k = clusters;
 		centroids = new Centroid[k];
+		for(int i=0; i <k; i++) centroids[i] =  new Centroid(); //initialize centroids
 		data = new ArrayList<DataPoint>();
 	}
 	
@@ -56,9 +57,18 @@ public class Kmeans {
 
 	//This method returns string of statistics, which includes centroids IV/EV values and their evaluation
 	public String[] getStatistics(){
-		String [] result;
+		String [] result = new String[k+3];
+		//result[0] stores value IV
+		//result[1] sotres value EV
+		//result[2] stores value IV/EV
+		//result[i+3] stores the value of centroid i
+		//TO-DO calculate values of IV, EV and IV/EV
 		
-		//TO-DO
+		//go through whole list of centroids to get their values
+		for(int i =0; i < k; i++){
+			result[i+3] = "Centroid #"+ i + " hax value x=" + centroids[i].getX() + " and value y=" + centroids[i].getY();
+		}
+		
 		
 		return result;
 	}
@@ -107,7 +117,22 @@ public class Kmeans {
 	
 	//This method recalculates centroids in each cluster
 	private void recalculateCentorids(){
-		
+		//add all the values of x for each data point that belongs to given centroid, do the same for values of y
+		double sumXvalues[] = new double[k]; //e.g. value sumXvalues[2] is sum of all x values of data points that belong to centroid #2
+		double sumYvalues[] = new double[k];
+		int countCentroidMembers[] = new int[k]; //this variable keeps track how many data points are assigned to given centroid
+		//go through whole array list and sum values of X for each datapoint that is assigned to given centroid. Do the same for y values
+		for(int i = 0; i < data.size(); i++){
+			int currentLabel = data.get(i).getLabel();
+			sumXvalues[currentLabel] +=  data.get(i).getX();
+			sumYvalues[currentLabel] +=  data.get(i).getY();
+			countCentroidMembers[data.get(i).getLabel()]++; //increment number of datapoints assigned to given centroid
+		}
+		//set new values for each centroid
+		for(int centrIdx = 0; centrIdx < k; centrIdx ++){
+			centroids[centrIdx].setX(sumXvalues[centrIdx]/countCentroidMembers[centrIdx]);
+			centroids[centrIdx].setY(sumYvalues[centrIdx]/countCentroidMembers[centrIdx]);
+		}
 	}
 	
 	//assign centroids random starting value in the range of min X and max X and for Y in range of min Y and max Y
@@ -129,7 +154,7 @@ public class Kmeans {
 		for(int i = 0; i < data.size(); i++) {
 			data.get(i).setLabel(currentLabel);
 			currentLabel++; //next data point will get next label
-			if(currentLabel > k) currentLabel = 0; //wrap around
+			if(currentLabel >= k) currentLabel = 0; //wrap around
 		}
 	}
 	
