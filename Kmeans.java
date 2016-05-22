@@ -18,13 +18,18 @@ public class Kmeans {
 	}
 	
 	//This method will get datapoints from dbLoader
-	public void loadData(HashMap<String, Boolean> states){
+	public void loadData(HashMap<String, Boolean> states, int ageGroup){
 		dbLoader db = new dbLoader();
-		data = db.getDataPoints(states);	
+		data = db.loadDataPoints(states, ageGroup);	
 	}
 	
 	//This method runs k-means algorithm and returns the results in form of an array of Strings which includes centroids location
-	public String[] runKmeans(){
+	public void runKmeans(){
+		
+	}
+	
+	//This method returns centroids calculated
+	public Centroid[] getCentroids(){
 		
 	}
 
@@ -33,7 +38,4 @@ public class Kmeans {
 		
 	}
 	
-	
-
-
 }
