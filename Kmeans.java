@@ -8,17 +8,30 @@ import java.util.Random;
  * 
  */
 
-public class Kmeans {
+public class Kmeans implements ActionListener{
 	Centroid[] centroids;
 	int k;
 	ArrayList<DataPoint> data;
 	boolean convergance = false;
 	
+	//^^fix
 	public Kmeans(int clusters) {
 		k = clusters;
 		centroids = new Centroid[k];
 		data = new ArrayList<DataPoint>();
 	}
+	
+	 //responds to the user clicking on a menu item
+    public void actionPerformed(ActionEvent event) {
+        String menuName = event.getActionCommand();//records the menu item the user clicks on
+        
+        //series of if else statements to decide what happens when the user clicks on a specific menu item
+        if (menuName.equals("Load Data")) {
+            loadData();
+        } else if (menuName.equals("Run Algorithm")) {
+             runKmeans();
+    	}
+    }
 	
 	//This method will get datapoints from dbLoader
 	public void loadData(HashMap<String, Boolean> states, int targetGroup){
