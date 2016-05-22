@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+import java.awt.event.*;
 
 /*
  * Kmeans.java
@@ -27,9 +28,9 @@ public class Kmeans implements ActionListener{
         
         //series of if else statements to decide what happens when the user clicks on a specific menu item
         if (menuName.equals("Load Data")) {
-            loadData();
+            loadData();//^^add proper variables
         } else if (menuName.equals("Run Algorithm")) {
-             runKmeans();
+           runKmeans();
     	}
     }
 	
