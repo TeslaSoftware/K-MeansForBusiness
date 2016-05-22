@@ -8,8 +8,10 @@
  * you can find this useful for mapping multiple data points on a map https://gist.github.com/parth1020/4481893
  */
 import javax.swing.*;
+import java.awt.FLowLayout;
 public class KmeansGUI extends JFrame{
 	static JMenuBar menuBar = new JMenuBar();//menu bar used to hold the GUI's drop down menus
+	static JPanel checkBoxPanel = new JPanel();
 	
 	public KmeansGUI(String title) {
         setTitle(title);
@@ -19,6 +21,8 @@ public class KmeansGUI extends JFrame{
 	setJMenuBar(menuBar);
 	createAlgorithmMenu();
 	createRepeatMenu();
+	createCheckBoxPanel();
+	add(checkBoxPanel);
 	setVisible(true);
 	}
 	/*to do the algorithm first create Kmeans object
@@ -64,6 +68,11 @@ public class KmeansGUI extends JFrame{
 
         //adds the menu to the menu bar
         menuBar.add(repeatMenu);
+    }
+    
+    private void createCheckBoxPanel(){
+    	checkBoxPanel.setLayout(new FlowLayout());
+    	
     }
 	
 }
