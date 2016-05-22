@@ -18,6 +18,7 @@ public class KmeansGUI {
 	 * then call method runKmeans() to run algorithm
 	 * then call method getCentroids() to obtain values of centroids (which are adjusted to their proper geo-location
 	 * then in the end call method  getStatistics() statistics to get returned information to display regarding EV and IV
+	 * tu run again set the object to null and do above steps once again
 	 */
 	
 	
