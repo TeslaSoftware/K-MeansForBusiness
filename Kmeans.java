@@ -38,6 +38,8 @@ public class Kmeans {
 	public void runKmeans(){
 		//1. pick centroids at random
 		selectRanCentroids();
+		//set labels to each point
+		intializeDataLabels();
 		do{
 			//2. cluster data using Euclidean distance
 			calculateDistances();
@@ -85,7 +87,22 @@ public class Kmeans {
 	
 	//This method calculate distances and changes the label if change has occur for given DataPoint
 	private void calculateDistances(){
-		
+		convergance = true; //if no changes will occur then algorithm converges
+		//calculate distance for each point to each centroid and check if the closest centroid is the same as the one assigned to this point. If not then change it 
+		//go through list of data points
+		for(int i =0; i < data.size(); i++){
+			DataPoint curPoint = data.get(i);
+			double curDistanceToCentroid = distanceToCentroid(curPoint,curPoint.getLabel());
+			//check for each centroid if it has shorter distance to given data point
+			for(int cen = 0; cen < centroids.length; cen++ ){
+				double calcDitanceToCen = distanceToCentroid(curPoint,cen); //calculated distance to currently analyzed centroid
+				//if is smaller then change labels
+				if(calcDitanceToCen < curDistanceToCentroid)  {
+					curPoint.setLabel(cen);
+					convergance = false; //if change occurred then algorithm does not converge in this iteration
+				}
+			}			
+		}
 	}
 	
 	//This method recalculates centroids in each cluster
@@ -106,4 +123,22 @@ public class Kmeans {
 		}
 	}
 	
+	private void intializeDataLabels(){
+		//go through whole data and set labels roughly evenly
+		int currentLabel = 0;
+		for(int i = 0; i < data.size(); i++) {
+			data.get(i).setLabel(currentLabel);
+			currentLabel++; //next data point will get next label
+			if(currentLabel > k) currentLabel = 0; //wrap around
+		}
+	}
+	
+	private double distanceToCentroid(DataPoint curPoint, int centroidNum){
+		//calculate interval distance for each x and y between data point and given centroid
+		double intervalX = Math.abs(curPoint.getX() - centroids[centroidNum].getX()); //absolute value of ((dataPoint X value) - (centroid X value))
+		double intervalY = Math.abs(curPoint.getX() - centroids[centroidNum].getX()); //absolute value of ((dataPoint Y) - (centroid Y))
+		//use Euclidean distance to calculate distance returned
+		double result = Math.sqrt(intervalX*intervalX + intervalY*intervalY ) ;// a^2 + b^2 = c^2 => square root of (a^2 + b^2) = c, which is our distance
+		return result;
+	}
 }
