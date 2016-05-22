@@ -31,6 +31,9 @@ public class Kmeans implements ActionListener{
             loadData();//^^add proper variables
         } else if (menuName.equals("Run Algorithm")) {
            runKmeans();
+    	} else if (menuName.equals("New Evaluation")){
+    	  //set something to null
+    	  runKmeans();
     	}
     }
 	
