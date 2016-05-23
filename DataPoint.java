@@ -27,6 +27,9 @@ public class DataPoint {
 	public String getZipCode() { return zipCode; }
 	public void setLabel(int l) { label = l; }
 	public int getLabel() { return label; }
-	
+
+	public String toString(){
+		return zipCode+" "+ x + " " + y;
+	}
 
 }
