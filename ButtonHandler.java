@@ -13,7 +13,9 @@ class ButtonHandler implements ActionListener {
 
         //series of if else statements to decide what happens when the user clicks on a specific button
         if (buttonName.equals("Run")) {
-            kmeans = new Kmeans();//insert k number
+            String k = (String) KmeansGUI.selectK.getSelectedItem();
+            String age = (String) KmeansGUI.selectAge.getSelectedItem();
+            kmeans = new Kmeans(Integer.parseInt(k));//insert k number
             kmeans.loadData();//get states and age group
             kmeans.runKmeans();
             KmeansGUI.run.setEnabled(false);
@@ -23,6 +25,10 @@ class ButtonHandler implements ActionListener {
             //insert method here
         } else if (buttonName.equals("New Evaluation")) {
             //set something to null
+            String k = (String) KmeansGUI.selectK.getSelectedItem();
+            String age = (String) KmeansGUI.selectAge.getSelectedItem();
+            kmeans = new Kmeans(Integer.parseInt(k));
+            kmeans.loadData();//get states and age group
             kmeans.runKmeans();
         }
     }
