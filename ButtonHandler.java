@@ -15,7 +15,7 @@ class ButtonHandler implements ActionListener {
         if (buttonName.equals("Run")) {
             String k = (String) KmeansGUI.selectK.getSelectedItem();
             String age = (String) KmeansGUI.selectAge.getSelectedItem();
-            kmeans = new Kmeans(Integer.parseInt(k));//insert k number
+            kmeans = new Kmeans(Integer.parseInt(k));
             kmeans.loadData();//get states and age group
             kmeans.runKmeans();
             KmeansGUI.run.setEnabled(false);
