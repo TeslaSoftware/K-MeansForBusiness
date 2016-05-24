@@ -1,3 +1,4 @@
+
 import java.awt.event.*;
 
 class ButtonHandler implements ActionListener {
@@ -15,7 +16,7 @@ class ButtonHandler implements ActionListener {
         if (buttonName.equals("Run")) {
             String k = (String) KmeansGUI.selectK.getSelectedItem();
             String age = (String) KmeansGUI.selectAge.getSelectedItem();
-            kmeans = new Kmeans(Integer.parseInt(k));
+            kmeans = new Kmeans(Integer.parseInt(k));//insert k number
             kmeans.loadData();//get states and age group
             kmeans.runKmeans();
             KmeansGUI.run.setEnabled(false);
