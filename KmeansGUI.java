@@ -42,6 +42,10 @@ static JPanel button = new JPanel();
 		run.setEnabled(true);
 		find.setEnabled(false);
 		restart.setEnabled(false);
+		ButtonHandler bh = new ButtonHandler();
+		run.addActionListener(bh);
+		find.addActionListener(bh);
+		restart.addActionListener(bh);
 	}
 	
 }
