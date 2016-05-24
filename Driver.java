@@ -1,8 +1,7 @@
 
 public class Driver {
 
-	public static void main(String[] args) {	 
-		KmeansGUI kmeans = new KmeansGUI("K-MeansForBusiness");	
-	}
-
+    public static void main(String[] args) {
+        KmeansGUI kmeans = new KmeansGUI("K-MeansForBusiness");
+    }
 }
