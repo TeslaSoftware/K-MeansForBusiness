@@ -12,6 +12,9 @@ static Kmeans kmeans;
           kmeans = new Kmeans();//insert k number
           loadData();//get states and age group
           runKmeans();
+          KmeansGUI.run.setEnabled(false);
+          KmeansGUI.find.setEnabled(true);
+          KmeansGUI.restart.setEnabled(true);
       } else if (menuName.equals("Find Optimal K")) {
           //insert method here
     	} else if (menuName.equals("New Evaluation")){
