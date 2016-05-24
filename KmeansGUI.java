@@ -9,11 +9,12 @@
  * you can find this useful for mapping multiple data points on a map https://gist.github.com/parth1020/4481893
  */
 import javax.swing.*;
-public class KmeansGUI extends JFrame{
-Static JButton run = new JButton("Run");
-Static JButton find = new JButton("Find Optimal K");
-Static JButton restart = new JButton("Restart Algorithm");
-Static JPanel button = new JPanel();
+import java.awt.BorderLayout;
+class KmeansGUI extends JFrame{
+static JButton run = new JButton("Run");
+static JButton find = new JButton("Find Optimal K");
+static JButton restart = new JButton("Restart Algorithm");
+static JPanel button = new JPanel();
 	
 	/*to do the algorithm first create Kmeans object
 	 * then load the database using method loadData on this object, 
@@ -34,14 +35,13 @@ Static JPanel button = new JPanel();
 		setVisible(true);
 	}
 	
-	public createButtonPanel(){
+	public void createButtonPanel(){
 		button.add(run);
 		button.add(find);
 		button.add(restart);
 		run.setEnabled(true);
-		find.setEnable(false);
+		find.setEnabled(false);
 		restart.setEnabled(false);
-		
 	}
 	
 }
