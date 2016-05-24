@@ -13,7 +13,7 @@ import java.awt.BorderLayout;
 class KmeansGUI extends JFrame{
 static JButton run = new JButton("Run");
 static JButton find = new JButton("Find Optimal K");
-static JButton restart = new JButton("Restart Algorithm");
+static JButton restart = new JButton("New Evaluation");
 static JPanel button = new JPanel();
 	
 	/*to do the algorithm first create Kmeans object
