@@ -22,10 +22,10 @@ class KmeansGUI extends JFrame {
     static JPanel button = new JPanel();
     static JPanel select = new JPanel(new FlowLayout());
     static JPanel outer = new JPanel(new BorderLayout());
-    static JScrollPane scroll = new JScrollPane();
     static JComboBox selectAge;
     static JComboBox selectK;
     static TextArea display = new TextArea();
+    static JTable check;
 
     /*to do the algorithm first create Kmeans object
      * then load the database using method loadData on this object, 
@@ -40,13 +40,13 @@ class KmeansGUI extends JFrame {
         setLocation(200, 100);
         setSize(700, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         createButtonPanel();
         add(button, BorderLayout.SOUTH);
         createSelectPanel();
         createOuterPanel();
         add(outer, BorderLayout.EAST);
-        add(scroll);
+        createCheckBoxTable();
+        add(new JScrollPane(check));
         setVisible(true);
     }
 
@@ -81,5 +81,12 @@ class KmeansGUI extends JFrame {
         outer.add(select, BorderLayout.NORTH);
         outer.add(display, BorderLayout.CENTER);
         display.setEditable(false);
+    }
+
+    private void createCheckBoxTable() {
+        Object[][] stateList = {{"AL",Boolean.FALSE}, {"AK",Boolean.FALSE}, {"AZ",Boolean.FALSE}, {"AR",Boolean.FALSE}, {"CA",Boolean.FALSE}, {"CO",Boolean.FALSE}, {"CT",Boolean.FALSE}, {"DE",Boolean.FALSE}, {"FL",Boolean.FALSE}, {"GA",Boolean.FALSE}, {"HI",Boolean.FALSE}, {"ID",Boolean.FALSE}, {"IL",Boolean.FALSE}, {"IN",Boolean.FALSE}, {"IA",Boolean.FALSE}, {"KS",Boolean.FALSE}, {"KY",Boolean.FALSE}, {"LA",Boolean.FALSE}, {"ME",Boolean.FALSE}, {"MD",Boolean.FALSE}, {"MA",Boolean.FALSE}, {"MI",Boolean.FALSE}, {"MN",Boolean.FALSE}, {"MS",Boolean.FALSE}, {"MO",Boolean.FALSE}, {"MT",Boolean.FALSE}, {"NE",Boolean.FALSE}, {"NV",Boolean.FALSE}, {"NH",Boolean.FALSE}, {"NJ",Boolean.FALSE}, {"NM",Boolean.FALSE}, {"NY",Boolean.FALSE}, {"NC",Boolean.FALSE}, {"ND",Boolean.FALSE}, {"OH",Boolean.FALSE}, {"OK",Boolean.FALSE}, {"OR",Boolean.FALSE}, {"PA",Boolean.FALSE}, {"RI",Boolean.FALSE}, {"SC",Boolean.FALSE}, {"SD",Boolean.FALSE}, {"TN",Boolean.FALSE}, {"TX",Boolean.FALSE}, {"UT",Boolean.FALSE}, {"VT",Boolean.FALSE}, {"VA",Boolean.FALSE}, {"WA",Boolean.FALSE}, {"WV",Boolean.FALSE}, {"WI",Boolean.FALSE}, {"WY",Boolean.FALSE}};
+        String[] columnNames = {"State", "CheckBox"};
+        States dataModel = new States(stateList, columnNames);
+        check = new JTable(dataModel);
     }
 }
