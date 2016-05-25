@@ -1,6 +1,5 @@
 
 import java.awt.event.*;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
 
