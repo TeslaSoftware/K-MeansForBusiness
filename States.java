@@ -1,10 +1,6 @@
 
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author David
- */
 public class States extends DefaultTableModel {
 
     public States(Object[][] states, String[] columnNames) {
