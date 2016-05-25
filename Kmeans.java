@@ -19,7 +19,7 @@ class Kmeans {
     }
 
     String[] getStatistics() {
-        String[] g=new String[5];
+        String[] g=new String[105];
         return g;
     }
 
