@@ -1,6 +1,10 @@
 
 import javax.swing.table.DefaultTableModel;
 
+/**
+ *
+ * @author David
+ */
 public class States extends DefaultTableModel {
 
     public States(Object[][] states, String[] columnNames) {
@@ -14,5 +18,11 @@ public class States extends DefaultTableModel {
             return getValueAt(0, 1).getClass();
         }
         return super.getColumnClass(col);
+    }
+
+    //prevents the editing of state names
+    @Override
+    public boolean isCellEditable(int row, int col) {
+        return col == 1;
     }
 }
