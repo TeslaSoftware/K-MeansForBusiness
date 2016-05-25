@@ -1,12 +1,6 @@
 
-
-
 import java.util.Hashtable;
 
-/**
- *
- * @author David
- */
 class Kmeans {
 
     Kmeans(int parseInt) {
@@ -19,8 +13,8 @@ class Kmeans {
     }
 
     String[] getStatistics() {
-        String[] g=new String[105];
-        return g;
+        String[] array=new String[105];
+        return array;
     }
 
 }
