@@ -1,12 +1,13 @@
 
 import java.awt.event.*;
-import java.util.Enumeration;
+
+import java.util.HashMap;
 import java.util.Hashtable;
 
 class ButtonHandler implements ActionListener {
 
     static Kmeans kmeans;
-    static Hashtable states;
+    static HashMap states;
     static Hashtable ageGroup;
     public ButtonHandler() {
     }
@@ -20,7 +21,7 @@ class ButtonHandler implements ActionListener {
             String k = (String) KmeansGUI.selectK.getSelectedItem();
             String age = (String) KmeansGUI.selectAge.getSelectedItem();           
             kmeans = new Kmeans(Integer.parseInt(k));
-            states = new Hashtable();
+            states = new HashMap();
             ageGroup = new Hashtable();
             getStates();
             loadAgeGroups();
@@ -38,7 +39,7 @@ class ButtonHandler implements ActionListener {
             String age = (String) KmeansGUI.selectAge.getSelectedItem();
             int targetGroup = (int)ageGroup.get(age);
             kmeans = new Kmeans(Integer.parseInt(k));
-            states = new Hashtable();
+            states = new HashMap();
             ageGroup = new Hashtable();
             getStates();
             loadAgeGroups();
