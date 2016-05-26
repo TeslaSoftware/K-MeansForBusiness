@@ -59,14 +59,19 @@ public class Kmeans {
 	public String[] getStatistics(){
 		String [] result = new String[k+3];
 		//result[0] stores value IV
-		//result[1] sotres value EV
+		double IV = getIV();
+		result[0] = "Intercluster Variability (IV) = " + IV;
+		//result[1] stores value EV
+		double EV = getEV();
+		result[1] = "Extracluster Variability (EV) = " + EV;
 		//result[2] stores value IV/EV
+		if(EV !=0) result[2] = "IV/EV = " + (IV/EV); 
+		result[1] = "Extracluster Variability (EV) = " + getEV();
 		//result[i+3] stores the value of centroid i
-		//TO-DO calculate values of IV, EV and IV/EV
-		
+				
 		//go through whole list of centroids to get their values
 		for(int i =0; i < k; i++){
-			result[i+3] = "Centroid #"+ i + " hax value x=" + centroids[i].getX() + " and value y=" + centroids[i].getY();
+			result[i+3] = "Centroid #"+ i + " hax value x=" + centroids[i].getX() + " and value y=" + centroids[i].getY() + ". It will reach approximately " + (countCentroidMembers(i)*100) + " people.";
 		}
 		
 		
@@ -91,8 +96,7 @@ public class Kmeans {
 			else if(currentPoint.getY() > maxX) maxX = currentPoint.getX(); //if not the smallest then maybe it is the largest		
 		}
 		//for each centroid select random value between minX and maxX to set value of x for each centroid. Do the same for value y
-		setCentroidsInitialValues(minX, minY, maxX, maxY);
-		
+		setCentroidsInitialValues(minX, minY, maxX, maxY);		
 	}
 	
 	//This method calculate distances and changes the label if change has occur for given DataPoint
@@ -130,8 +134,10 @@ public class Kmeans {
 		}
 		//set new values for each centroid
 		for(int centrIdx = 0; centrIdx < k; centrIdx ++){
-			centroids[centrIdx].setX(sumXvalues[centrIdx]/countCentroidMembers[centrIdx]);
-			centroids[centrIdx].setY(sumYvalues[centrIdx]/countCentroidMembers[centrIdx]);
+			if(countCentroidMembers[centrIdx] != 0){
+				centroids[centrIdx].setX(sumXvalues[centrIdx]/countCentroidMembers[centrIdx]);
+				centroids[centrIdx].setY(sumYvalues[centrIdx]/countCentroidMembers[centrIdx]);
+			}			
 		}
 	}
 	
@@ -159,11 +165,52 @@ public class Kmeans {
 	}
 	
 	private double distanceToCentroid(DataPoint curPoint, int centroidNum){
-		//calculate interval distance for each x and y between data point and given centroid
-		double intervalX = Math.abs(curPoint.getX() - centroids[centroidNum].getX()); //absolute value of ((dataPoint X value) - (centroid X value))
-		double intervalY = Math.abs(curPoint.getX() - centroids[centroidNum].getX()); //absolute value of ((dataPoint Y) - (centroid Y))
+		return calculateDistance(curPoint.getX(), curPoint.getY(), centroids[centroidNum].getX(), centroids[centroidNum].getY());
+	}
+	
+	//This method calculates Intercluster Variability (IV) 
+	public double getIV(){
+		double result =0;
+		//for each cluster clust sum the distances from points that belong to this cluster to cluster centroid and sum the results
+		for(int clust = 0; clust < k; clust++){
+			for(int idx = 0; idx < data.size(); idx++){
+				if(data.get(idx).getLabel() == clust) result += distanceToCentroid(data.get(idx), clust);
+			}
+			
+		}
+		return result;		
+	}
+	
+	//This method calculates Extracluster Variability (EV) 
+	public double getEV(){
+		double result = 0;
+		//EV = (1/n) sigma(i) sigma(j) dirac C(xi)≠C(xj))d(xi,xj)
+		//sum distances of elements from different clusters
+		for(int i = 0; i < data.size(); i ++) {
+			for(int j = 0; j < data.size(); j++){
+				if(data.get(i).getLabel() != data.get(j).getLabel()) 
+					result +=calculateDistance(data.get(i).getX(), data.get(i).getY(), data.get(j).getX(), data.get(j).getY());
+			}
+		}
+		//divide result by number of elements
+		return result/data.size();
+
+	}
+	
+	private double calculateDistance(double x1, double y1, double x2, double y2){
+		//calculate interval distance for each x and y between two points
+		double intervalX = Math.abs(x1 - x2);
+		double intervalY = Math.abs(y1 - y2);
 		//use Euclidean distance to calculate distance returned
 		double result = Math.sqrt(intervalX*intervalX + intervalY*intervalY ) ;// a^2 + b^2 = c^2 => square root of (a^2 + b^2) = c, which is our distance
+		return result;
+	}
+	
+	private int countCentroidMembers(int cent){
+		int result = 0;
+		for(int i=0; i < data.size(); i++){
+			if(data.get(i).getLabel() == cent ) result++;
+		}
 		return result;
 	}
 }
