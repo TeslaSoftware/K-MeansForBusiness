@@ -17,8 +17,8 @@ import java.awt.TextArea;
 class KmeansGUI extends JFrame {
 
     static JButton run = new JButton("Run");
-    static JButton find = new JButton("Find Optimal K");
-    static JButton restart = new JButton("New Evaluation");
+    static JButton findMin = new JButton("Find Optimal K Minimum Method");
+    static JButton findElbow = new JButton("Find Optimal K Elbow Method");
     static JButton selectAll = new JButton("Select All");
     static JPanel button = new JPanel();
     static JPanel select = new JPanel(new FlowLayout());
@@ -53,15 +53,15 @@ class KmeansGUI extends JFrame {
 
     public void createButtonPanel() {
         button.add(run);
-        button.add(find);
-        button.add(restart);
+        button.add(findMin);
+        button.add(findElbow);
         run.setEnabled(true);
-        find.setEnabled(false);
-        restart.setEnabled(false);
+        findMin.setEnabled(false);
+        findElbow.setEnabled(false);
         ButtonHandler bh = new ButtonHandler();
         run.addActionListener(bh);
-        find.addActionListener(bh);
-        restart.addActionListener(bh);
+        findMin.addActionListener(bh);
+        findElbow.addActionListener(bh);
     }
 
     public void createSelectPanel() {
@@ -69,7 +69,7 @@ class KmeansGUI extends JFrame {
         String[] k = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60", "61", "62", "63", "64", "65", "66", "67", "68", "69", "70", "71", "72", "73", "74", "75", "76", "77", "78", "79", "80", "81", "82", "83", "84", "85", "86", "87", "88", "89", "90", "91", "92", "93", "94", "95", "96", "97", "98", "99", "100"};
         selectAge = new JComboBox(age);
         selectK = new JComboBox(k);
-        JLabel ageLabel = new JLabel("Age Group");
+        JLabel ageLabel = new JLabel("Demographic Group");
         JLabel kLabel = new JLabel("Select K");
         ButtonHandler bh = new ButtonHandler();
         selectAll.addActionListener(bh);
