@@ -11,17 +11,7 @@ import java.util.*;
 public class dbLoader {
 
 	public dbLoader(){
-		HashMap<String,Boolean> statesSelected = new HashMap<>();
-		statesSelected.put("NY",true);
-		statesSelected.put("NJ",true);
-		statesSelected.put("CA",false);
-		statesSelected.put("NV",true);
-		ArrayList<DataPoint> dataPoints;
-		dataPoints=loadDataPoints(statesSelected,1);
-		Iterator itr = dataPoints.iterator();
-		while (itr.hasNext()){
-			System.out.println(itr.next().toString());
-		}
+		
 	}
 	
 	
@@ -39,7 +29,7 @@ public class dbLoader {
 		//after going through whole file return ArrayList of Points
 
 		ArrayList<DataPoint> result = new ArrayList<DataPoint>();
-		String zip, state, geograpy;
+		String zip, state, geography;
 		double latitude, longitude;
 		int ageGroupPopulation;
 		Scanner fileScan = loadCSV("db","CensusDB_ACS_14_5YR.csv");
@@ -48,7 +38,7 @@ public class dbLoader {
 		while (fileScan.hasNextLine()){
 			zip = fileScan.next();
 			state = fileScan.next();
-			geograpy = fileScan.next();
+			geography = fileScan.next();
 			latitude = Double.parseDouble(fileScan.next());
 			longitude = Double.parseDouble(fileScan.next())+180;
 			for (int i = 0; i < columnNum; i++) {
@@ -62,6 +52,7 @@ public class dbLoader {
 			}
 			fileScan.nextLine();
 		}
+
 		return result;
 	}
 	private Scanner loadCSV(String subDirectory, String fileName) {
