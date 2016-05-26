@@ -39,7 +39,7 @@ class KmeansGUI extends JFrame {
     public KmeansGUI(String title) {
         setTitle(title);
         setLocation(200, 100);
-        setSize(700, 450);
+        setSize(750, 450);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         createButtonPanel();
         add(button, BorderLayout.SOUTH);
