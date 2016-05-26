@@ -3,6 +3,7 @@ import java.awt.event.*;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Stack;
 
 class ButtonHandler implements ActionListener {
 
@@ -10,10 +11,11 @@ class ButtonHandler implements ActionListener {
     static HashMap states;
     static Hashtable ageGroup;
     static PrintWriter writer = null;
+    static String theK = "";
+    static String theAge = "";
 
     public ButtonHandler() {
     }
-    //responds to the user clicking on a button
 
     public void actionPerformed(ActionEvent event) {
         String buttonName = event.getActionCommand();//records the button item the user clicks on
@@ -22,12 +24,14 @@ class ButtonHandler implements ActionListener {
         if (buttonName.equals("Run")) {
 
             try {
-                writer = new PrintWriter("results.txt", "UTF-8");
+                writer = new PrintWriter("resultsCentroids.txt", "UTF-8");
             } catch (Exception e) {
                 e.printStackTrace();
             }
             String k = (String) KmeansGUI.selectK.getSelectedItem();
             String age = (String) KmeansGUI.selectAge.getSelectedItem();
+            theK = k;
+            theAge = age;
             kmeans = new Kmeans(Integer.parseInt(k));
             states = new HashMap();
             ageGroup = new Hashtable();
@@ -36,67 +40,25 @@ class ButtonHandler implements ActionListener {
             int targetGroup = (int) ageGroup.get(age);
             kmeans.loadData(states, targetGroup);
             kmeans.runKmeans();
-            writer.println("Evaluation for k = " + k + ", age group = " + age + ", state =");
-            KmeansGUI.display.append("Evaluation for k = " + k + ", age group = " + age + ", state =" + "\n");
+            KmeansGUI.display.setText("");
+            writer.println("Evaluation for k = " + k + ", demographic group = " + age + ", states = " + printSelectedStates());
+            KmeansGUI.display.append("Evaluation for k = " + k + ", demographic group = " + age + ", states = " + printSelectedStates() + "\n");
             String[] results = kmeans.getStatistics();
             for (int i = 0; i < results.length; i++) {
                 KmeansGUI.display.append(results[i] + "\n");
                 writer.println(results[i]);
             }
-            writer.flush();
-            double[] minEVIV = kmeans.calculateOptimumK();
-            for (int i = 2; i < minEVIV.length; i++) {
-                KmeansGUI.display.append("IV/EV for k=" + i + " is " + minEVIV[i] + "\n");
-                writer.println("IV/EV for k=" + i + " is " + minEVIV[i]);
-            }
-
-            KmeansGUI.display.append("Optimum k for min IV/EV is: " + kmeans.getOptimumK() + "\n");
-            writer.println("Optimum k for min IV/EV is: " + kmeans.getOptimumK());
-
-            double[] elbowResults = kmeans.calculateElbowMethod();
-            for (int i = 2; i < elbowResults.length; i++) {
-                KmeansGUI.display.append("SSE for k=" + i + " is " + elbowResults[i] + "\n");
-                writer.println("SSE for k=" + i + " is " + elbowResults[i]);
-            }
-
-            KmeansGUI.display.append("Optimum k using elbow method is: " + kmeans.getOptimumK() + "\n");
-            writer.println("Optimum k for min IV/EV is: " + kmeans.getOptimumK());
-
-
-            KmeansGUI.display.append("The end.\n");
-
             writer.close();
-            KmeansGUI.run.setEnabled(false);
-            KmeansGUI.find.setEnabled(true);
-            KmeansGUI.restart.setEnabled(true);
-        } else if (buttonName.equals("Find Optimal K")) {
-            //insert method here
-        } else if (buttonName.equals("New Evaluation")) {
-            //set something to null
+            KmeansGUI.findMin.setEnabled(true);
+            KmeansGUI.findElbow.setEnabled(true);
+        } else if (buttonName.equals("Find Optimal K Minimum Method")) {
             try {
-                writer = new PrintWriter("results.txt", "UTF-8");
+                writer = new PrintWriter("resultsMinimumMethod.txt", "UTF-8");
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            String k = (String) KmeansGUI.selectK.getSelectedItem();
-            String age = (String) KmeansGUI.selectAge.getSelectedItem();
-            kmeans = new Kmeans(Integer.parseInt(k));
-            states = new HashMap();
-            ageGroup = new Hashtable();
-            getStates();
-            loadAgeGroups();
-            int targetGroup = (int) ageGroup.get(age);
-            kmeans.loadData(states, targetGroup);
-            kmeans.runKmeans();
-            KmeansGUI.display.setText("");//code for New Evaluation button
-            writer.println("Evaluation for k = " + k + ", age group = " + age + ", state =");
-            KmeansGUI.display.append("Evaluation for k = " + k + ", age group = " + age + ", state =" + "\n");
-            String[] results = kmeans.getStatistics();
-            for (int i = 0; i < results.length; i++) {
-                KmeansGUI.display.append(results[i] + "\n");
-                writer.println(results[i]);
-            }
-            writer.flush();
+            writer.println("Evaluation for k = " + theK + ", demographic group = " + theAge + ", states = " + printSelectedStates());
+            KmeansGUI.display.append("Evaluation for k = " + theK + ", demographic group = " + theAge + ", states = " + printSelectedStates() + "\n");
             double[] minEVIV = kmeans.calculateOptimumK();
             for (int i = 2; i < minEVIV.length; i++) {
                 KmeansGUI.display.append("IV/EV for k=" + i + " is " + minEVIV[i] + "\n");
@@ -105,7 +67,14 @@ class ButtonHandler implements ActionListener {
 
             KmeansGUI.display.append("Optimum k for min IV/EV is: " + kmeans.getOptimumK() + "\n");
             writer.println("Optimum k for min IV/EV is: " + kmeans.getOptimumK());
-
+        } else if (buttonName.equals("Find Optimal K Elbow Method")) {
+            try {
+                writer = new PrintWriter("resultsElbowMethod.txt", "UTF-8");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            writer.println("Evaluation for k = " + theK + ", demographic group = " + theAge + ", states = " + printSelectedStates());
+            KmeansGUI.display.append("Evaluation for k = " + theK + ", demographic group = " + theAge + ", states = " + printSelectedStates() + "\n");
             double[] elbowResults = kmeans.calculateElbowMethod();
             for (int i = 2; i < elbowResults.length; i++) {
                 KmeansGUI.display.append("SSE for k=" + i + " is " + elbowResults[i] + "\n");
@@ -115,10 +84,6 @@ class ButtonHandler implements ActionListener {
             KmeansGUI.display.append("Optimum k using elbow method is: " + kmeans.getOptimumK() + "\n");
             writer.println("Optimum k for min IV/EV is: " + kmeans.getOptimumK());
 
-
-            KmeansGUI.display.append("The end.\n");
-
-            writer.close();
         } else if (buttonName.equals("Select All")) {
             for (int i = 0; i < 50; i++) {
                 KmeansGUI.check.getModel().setValueAt(true, i, 1);
@@ -140,5 +105,15 @@ class ButtonHandler implements ActionListener {
         for (int i = 0; i < 18; i++) {
             ageGroup.put(ageList[i], i + 1);
         }
+    }
+
+    private String printSelectedStates() {
+        String theStates = "";
+        for (int i = 0; i < 50; i++) {
+            if (KmeansGUI.check.getModel().getValueAt(i, 1) == true) {
+                theStates = theStates.concat(KmeansGUI.check.getValueAt(i, 0) + ", ");
+            }
+        }
+        return theStates;
     }
 }
