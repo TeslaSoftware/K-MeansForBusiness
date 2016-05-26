@@ -40,11 +40,11 @@ public class Kmeans {
 		intializeDataLabels();
 		do{
 			//2. cluster data using Euclidean distance
-			System.out.println("calcDist");
+			//System.out.println("calcDist");
 			calculateDistances();
 			
 			//3. recalculate centroids
-			System.out.println("Re-calc centr.");
+			//System.out.println("Re-calc centr.");
 			recalculateCentorids();
 			
 			
@@ -54,7 +54,15 @@ public class Kmeans {
 	}
 	
 	//This method returns centroids calculated
-	public Centroid[] getCentroids(){ return centroids; }
+	public Centroid[] getCentroids(){ 
+		Centroid[] result = new Centroid[k];
+		for(int i = 0; i< k; i++) {
+			result[i] = new Centroid();
+			result[i].setX(centroids[i].getX()-180);
+			result[i].setY(centroids[i].getY());
+		}
+		
+		return centroids; }
 
 	//This method returns string of statistics, which includes centroids IV/EV values and their evaluation
 	public String[] getStatistics(){
@@ -72,7 +80,7 @@ public class Kmeans {
 				
 		//go through whole list of centroids to get their values
 		for(int i =0; i < k; i++){
-			result[i+3] = "Centroid #"+ i + " hax value x=" + centroids[i].getX() + " and value y=" + centroids[i].getY() + ". It will reach approximately " + (countCentroidMembers(i)*100) + " people.";
+			result[i+3] = "Centroid #"+ i + " hax value x=" + (centroids[i].getX()-180) + " and value y=" + centroids[i].getY() + ". It will reach approximately " + (countCentroidMembers(i)*100) + " people.";
 		}
 		
 		
@@ -105,18 +113,18 @@ public class Kmeans {
 		convergance = true; //if no changes will occur then algorithm converges
 		//calculate distance for each point to each centroid and check if the closest centroid is the same as the one assigned to this point. If not then change it 
 		//go through list of data points
-		System.out.println("About to recalculate distances.   ");
-		System.out.println();
+		//System.out.println("About to recalculate distances.   ");
+		//System.out.println();
 		for(int i =0; i < sizeOfData; i++){
 			DataPoint curPoint = data.get(i);
 			double curDistanceToCentroid = distanceToCentroid(curPoint,curPoint.getLabel());
-			System.out.println("CurDistToCent obtained.   ");
+			//System.out.println("CurDistToCent obtained.   ");
 			//check for each centroid if it has shorter distance to given data point
 			for(int cen = 0; cen < k; cen++ ){
 				double calcDitanceToCen = distanceToCentroid(curPoint,cen); //calculated distance to currently analyzed centroid
 				//if is smaller then change the point labels
 				if(calcDitanceToCen < curDistanceToCentroid)  {
-					System.out.println("Dist to centroid changed.   ");
+					//System.out.println("Dist to centroid changed.   ");
 					curPoint.setLabel(cen);
 					convergance = false; //if change occurred then algorithm does not converge in this iteration
 				}
@@ -131,7 +139,7 @@ public class Kmeans {
 		double sumYvalues[] = new double[k];
 		int countCentroidMembers[] = new int[k]; //this variable keeps track how many data points are assigned to given centroid
 		//go through whole array list and sum values of X for each datapoint that is assigned to given centroid. Do the same for y values
-		System.out.println("summing x and y's for each centroid:");
+		//System.out.println("summing x and y's for each centroid:");
 		for(int i = 0; i < sizeOfData; i++){
 			System.out.print(".");
 			int currentLabel = data.get(i).getLabel();
@@ -139,11 +147,11 @@ public class Kmeans {
 			sumYvalues[currentLabel] +=  data.get(i).getY();
 			countCentroidMembers[currentLabel]++; //increment number of datapoints assigned to given centroid
 		}
-		System.out.println("setting new centroid values");
+		//System.out.println("setting new centroid values");
 		//set new values for each centroid
 		for(int centrIdx = 0; centrIdx < k; centrIdx ++){
 			if(countCentroidMembers[centrIdx] != 0){
-				System.out.println("centroid " + centrIdx + " adjusted");
+				//System.out.println("centroid " + centrIdx + " adjusted");
 				centroids[centrIdx].setX(sumXvalues[centrIdx]/countCentroidMembers[centrIdx]);
 				centroids[centrIdx].setY(sumYvalues[centrIdx]/countCentroidMembers[centrIdx]);
 			}			
