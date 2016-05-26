@@ -84,7 +84,7 @@ class KmeansGUI extends JFrame {
     private void createOuterPanel() {
         outer.add(select, BorderLayout.NORTH);
         outer.add(display, BorderLayout.SOUTH);
-        display.setEditable(false);
+        display.setEditable(true);
     }
 
     private void createCheckBoxTable() {
