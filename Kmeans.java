@@ -141,7 +141,7 @@ public class Kmeans {
 		//go through whole array list and sum values of X for each datapoint that is assigned to given centroid. Do the same for y values
 		//System.out.println("summing x and y's for each centroid:");
 		for(int i = 0; i < sizeOfData; i++){
-			System.out.print(".");
+			//System.out.print(".");
 			int currentLabel = data.get(i).getLabel();
 			sumXvalues[currentLabel] +=  data.get(i).getX();
 			sumYvalues[currentLabel] +=  data.get(i).getY();

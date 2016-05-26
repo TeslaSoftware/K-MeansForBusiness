@@ -9,7 +9,7 @@ import java.util.Iterator;
 public class testKmeans {
 
 	public static void main(String[] args) {
-		int k = 3;
+		int k = 7;
 		PrintWriter writer = null;
 		try {
 			writer = new PrintWriter("results.txt", "UTF-8");
@@ -18,6 +18,7 @@ public class testKmeans {
 		}
 		Kmeans km = new Kmeans(k);
 		ArrayList<DataPoint> dataPoints;
+		writer.println("Evaluation for k =" + k + " and the following states: NY, NJ, CT" );
 		HashMap<String,Boolean> statesSelected = new HashMap<>();
 		statesSelected.put("NY",true);
 		statesSelected.put("NJ",true);
@@ -30,7 +31,7 @@ public class testKmeans {
 			System.out.println(results[i]);
 			writer.println(results[i]);
 		}
-			
+		
 		double [] minEVIV = km.calculateOptimumK();
 		for(int i=2; i < minEVIV.length ; i++){
 			System.out.println("IV/EV for k=" + i  +" is " + minEVIV[i]);
@@ -49,8 +50,9 @@ public class testKmeans {
 		System.out.println("Optimum k using elbow method is: " + km.getOptimumK());
 		writer.println("Optimum k for min IV/EV is: " + km.getOptimumK());
 		
-		writer.close();
+		
 		System.out.println("The end.");
-
+		
+		writer.close();
 	}
 }
