@@ -36,8 +36,8 @@ class ButtonHandler implements ActionListener {
             int targetGroup = (int) ageGroup.get(age);
             kmeans.loadData(states, targetGroup);
             kmeans.runKmeans();
-            writer.println("Evaluation for k = " + k + ", age goup = " + age + ", state =");
-            KmeansGUI.display.append("Evaluation for k = " + k + ", age goup = " + age + ", state =" + "\n");
+            writer.println("Evaluation for k = " + k + ", age group = " + age + ", state =");
+            KmeansGUI.display.append("Evaluation for k = " + k + ", age group = " + age + ", state =" + "\n");
             String[] results = kmeans.getStatistics();
             for (int i = 0; i < results.length; i++) {
                 KmeansGUI.display.append(results[i] + "\n");
@@ -89,8 +89,8 @@ class ButtonHandler implements ActionListener {
             kmeans.loadData(states, targetGroup);
             kmeans.runKmeans();
             KmeansGUI.display.setText("");//code for New Evaluation button
-            writer.println("Evaluation for k = " + k + ", age goup = " + age + ", state =");
-            KmeansGUI.display.append("Evaluation for k = " + k + ", age goup = " + age + ", state =" + "\n");
+            writer.println("Evaluation for k = " + k + ", age group = " + age + ", state =");
+            KmeansGUI.display.append("Evaluation for k = " + k + ", age group = " + age + ", state =" + "\n");
             String[] results = kmeans.getStatistics();
             for (int i = 0; i < results.length; i++) {
                 KmeansGUI.display.append(results[i] + "\n");
