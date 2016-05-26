@@ -48,7 +48,8 @@ public class testKmeans {
 			
 		System.out.println("Optimum k using elbow method is: " + km.getOptimumK());
 		writer.println("Optimum k for min IV/EV is: " + km.getOptimumK());
-				
+		
+		writer.close();
 		System.out.println("The end.");
 
 	}
