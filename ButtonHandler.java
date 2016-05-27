@@ -67,6 +67,7 @@ class ButtonHandler implements ActionListener {
 
             KmeansGUI.display.append("Optimum k for min IV/EV is: " + kmeans.getOptimumK() + "\n");
             writer.println("Optimum k for min IV/EV is: " + kmeans.getOptimumK());
+            writer.close();
         } else if (buttonName.equals("Find Optimal K Elbow Method")) {
             try {
                 writer = new PrintWriter("resultsElbowMethod.txt", "UTF-8");
@@ -83,6 +84,7 @@ class ButtonHandler implements ActionListener {
 
             KmeansGUI.display.append("Optimum k using elbow method is: " + kmeans.getOptimumK() + "\n");
             writer.println("Optimum k for min IV/EV is: " + kmeans.getOptimumK());
+            writer.close();
 
         } else if (buttonName.equals("Select All")) {
             for (int i = 0; i < 50; i++) {
