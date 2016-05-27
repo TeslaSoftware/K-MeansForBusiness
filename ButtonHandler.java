@@ -41,8 +41,6 @@ class ButtonHandler implements ActionListener {
             kmeans.loadData(states, targetGroup);
             kmeans.runKmeans();
             KmeansGUI.display.setText("");
-            writer.println("Evaluation for k = " + k + ", demographic group = " + age + ", states = " + printSelectedStates());
-            KmeansGUI.display.append("Evaluation for k = " + k + ", demographic group = " + age + ", states = " + printSelectedStates() + "\n");
             String[] results = kmeans.getStatistics();
             for (int i = 0; i < results.length; i++) {
                 KmeansGUI.display.append(results[i] + "\n");
@@ -57,8 +55,6 @@ class ButtonHandler implements ActionListener {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            writer.println("Evaluation for k = " + theK + ", demographic group = " + theAge + ", states = " + printSelectedStates());
-            KmeansGUI.display.append("Evaluation for k = " + theK + ", demographic group = " + theAge + ", states = " + printSelectedStates() + "\n");
             double[] minEVIV = kmeans.calculateOptimumK();
             for (int i = 2; i < minEVIV.length; i++) {
                 KmeansGUI.display.append("IV/EV for k=" + i + " is " + minEVIV[i] + "\n");
@@ -74,8 +70,7 @@ class ButtonHandler implements ActionListener {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            writer.println("Evaluation for k = " + theK + ", demographic group = " + theAge + ", states = " + printSelectedStates());
-            KmeansGUI.display.append("Evaluation for k = " + theK + ", demographic group = " + theAge + ", states = " + printSelectedStates() + "\n");
+
             double[] elbowResults = kmeans.calculateElbowMethod();
             for (int i = 2; i < elbowResults.length; i++) {
                 KmeansGUI.display.append("SSE for k=" + i + " is " + elbowResults[i] + "\n");
@@ -89,6 +84,12 @@ class ButtonHandler implements ActionListener {
         } else if (buttonName.equals("Select All")) {
             for (int i = 0; i < 50; i++) {
                 KmeansGUI.check.getModel().setValueAt(true, i, 1);
+            }
+
+        }
+        else if (buttonName.equals("Deselect All")) {
+            for (int i = 0; i < 50; i++) {
+                KmeansGUI.check.getModel().setValueAt(false, i, 1);
             }
 
         }
@@ -107,15 +108,5 @@ class ButtonHandler implements ActionListener {
         for (int i = 0; i < 18; i++) {
             ageGroup.put(ageList[i], i + 1);
         }
-    }
-
-    private String printSelectedStates() {
-        String theStates = "";
-        for (int i = 0; i < 50; i++) {
-            if (KmeansGUI.check.getModel().getValueAt(i, 1) == true) {
-                theStates = theStates.concat(KmeansGUI.check.getValueAt(i, 0) + ", ");
-            }
-        }
-        return theStates;
     }
 }

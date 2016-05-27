@@ -20,6 +20,7 @@ class KmeansGUI extends JFrame {
     static JButton findMin = new JButton("Find Optimal K Minimum Method");
     static JButton findElbow = new JButton("Find Optimal K Elbow Method");
     static JButton selectAll = new JButton("Select All");
+    static JButton deselectAll = new JButton("Deselect All");
     static JPanel button = new JPanel();
     static JPanel select = new JPanel(new FlowLayout());
     static JPanel outer = new JPanel(new BorderLayout());
@@ -73,7 +74,9 @@ class KmeansGUI extends JFrame {
         JLabel kLabel = new JLabel("Select K");
         ButtonHandler bh = new ButtonHandler();
         selectAll.addActionListener(bh);
+        deselectAll.addActionListener(bh);
         select.add(selectAll);
+        select.add(deselectAll);
         select.add(ageLabel);
         select.add(selectAge);
         select.add(kLabel);
