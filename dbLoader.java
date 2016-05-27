@@ -41,14 +41,12 @@ public class dbLoader {
 			geography = fileScan.next();
 			latitude = Double.parseDouble(fileScan.next());
 			longitude = Double.parseDouble(fileScan.next())+180;
-			for (int i = 0; i < columnNum; i++) {
+			for (int i = 0; i < columnNum+3; i++) {
 				fileScan.next();
 			}
 			ageGroupPopulation = Integer.parseInt(fileScan.next());
 			if(statesSelected.containsKey(state) && statesSelected.get(state)){
-				for (int i = 0; i < ageGroupPopulation/100; i++) {
-					result.add(new DataPoint(zip,latitude,longitude));
-				}
+				result.add(new DataPoint(zip,latitude,longitude,ageGroupPopulation));
 			}
 			fileScan.nextLine();
 		}

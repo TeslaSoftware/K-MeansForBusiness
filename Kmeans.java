@@ -1,3 +1,4 @@
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -17,21 +18,21 @@ public class Kmeans {
 	private ArrayList<DataPoint> data;
 	private boolean convergance = false;
 	private int sizeOfData;
-
+	
 	public Kmeans(int clusters) {
 		k = clusters;
 		centroids = new Centroid[k];
 		for(int i=0; i <k; i++) centroids[i] =  new Centroid(); //initialize centroids
 		data = new ArrayList<DataPoint>();
 	}
-
+	
 	//This method will get datapoints from dbLoader
 	public void loadData(HashMap<String, Boolean> states, int targetGroup){
 		dbLoader db = new dbLoader();
 		data = db.loadDataPoints(states, targetGroup);
 		sizeOfData = data.size();
 	}
-
+	
 	//This method runs k-means algorithm and returns the results in form of an array of Strings which includes centroids location
 	public void runKmeans(){
 		//1. pick centroids at random
@@ -40,33 +41,37 @@ public class Kmeans {
 		intializeDataLabels();
 		do{
 			//2. cluster data using Euclidean distance
-			//System.out.println("calcDist");
 			calculateDistances();
-
+			
 			//3. recalculate centroids
-			//System.out.println("Re-calc centr.");
 			recalculateCentorids();
-
-
+			
+			
 		}while(!convergance);
 		//4. repeat steps 2 & 3 until convergance
-
+			
 	}
-
+	
 	//This method returns centroids calculated
-	public Centroid[] getCentroids(){
+	public Centroid[] getCentroids(){ 
 		Centroid[] result = new Centroid[k];
 		for(int i = 0; i< k; i++) {
 			result[i] = new Centroid();
 			result[i].setX(centroids[i].getX()-180);
 			result[i].setY(centroids[i].getY());
 		}
-
+		
 		return centroids; }
 
 	//This method returns string of statistics, which includes centroids IV/EV values and their evaluation
 	public String[] getStatistics(){
 		String [] result = new String[k+3];
+		if(sizeOfData == 0 ) {
+			result[0] = "Please select states";
+			return result; //if no data then return empty
+		}
+		
+		
 		//result[0] stores value IV
 		double IV = getIV();
 		result[0] = "Intercluster Variability (IV) = " + IV;
@@ -74,23 +79,25 @@ public class Kmeans {
 		double EV = getEV();
 		result[1] = "Extracluster Variability (EV) = " + EV;
 		//result[2] stores value IV/EV
-		if(EV !=0) result[2] = "IV/EV = " + (IV/EV);
+		if(EV !=0) result[2] = "IV/EV = " + (IV/EV); 
 		result[1] = "Extracluster Variability (EV) = " + getEV();
 		//result[i+3] stores the value of centroid i
-
+		
+		DecimalFormat df = new DecimalFormat("#0.00000");
 		//go through whole list of centroids to get their values
 		for(int i =0; i < k; i++){
-			result[i+3] = "Centroid #"+ i + " hax value x=" + (centroids[i].getX()-180) + " and value y=" + centroids[i].getY() + ". It will reach approximately " + (countCentroidMembers(i)*100) + " people.";
+			result[i+3] = "Centroid #"+ (i+1) + ": \tLatitude=" + df.format(centroids[i].getY()) + "\tlongitude=" + df.format(centroids[i].getX()-180) + " \tProximity " + countCentroidMembers(i) + " people.  \nhttps://www.google.com/maps/preview/@" +   df.format(centroids[i].getY()) + ","  +df.format(centroids[i].getX()-180) + ",10z\n";
 		}
-
-
+		
+		
 		return result;
 	}
-
+	
 	//This methods selects centroids at random
 	private void selectRanCentroids(){
 		int i =0, j=0;
 		double  x=0, y=0;
+		if(sizeOfData == 0 ) return;
 		//for each centroid set its x and y
 		while(i < k){
 			//pick at random dataPoint from data list and get its x and y values.
@@ -109,33 +116,29 @@ public class Kmeans {
 				centroids[i].setY(y);
 				i++;
 			}
-		}
+		}	
 	}
-
+	
 	//This method calculate distances and changes the label if change has occur for given DataPoint
 	private void calculateDistances(){
 		convergance = true; //if no changes will occur then algorithm converges
 		//calculate distance for each point to each centroid and check if the closest centroid is the same as the one assigned to this point. If not then change it 
 		//go through list of data points
-		//System.out.println("About to recalculate distances.   ");
-		//System.out.println();
 		for(int i =0; i < sizeOfData; i++){
 			DataPoint curPoint = data.get(i);
 			double curDistanceToCentroid = distanceToCentroid(curPoint,curPoint.getLabel());
-			//System.out.println("CurDistToCent obtained.   ");
 			//check for each centroid if it has shorter distance to given data point
 			for(int cen = 0; cen < k; cen++ ){
 				double calcDitanceToCen = distanceToCentroid(curPoint,cen); //calculated distance to currently analyzed centroid
 				//if is smaller then change the point labels
 				if(calcDitanceToCen < curDistanceToCentroid)  {
-					//System.out.println("Dist to centroid changed.   ");
 					curPoint.setLabel(cen);
 					convergance = false; //if change occurred then algorithm does not converge in this iteration
 				}
-			}
+			}			
 		}
 	}
-
+	
 	//This method recalculates centroids in each cluster
 	private void recalculateCentorids(){
 		//add all the values of x for each data point that belongs to given centroid, do the same for values of y
@@ -147,34 +150,21 @@ public class Kmeans {
 		for(int i = 0; i < sizeOfData; i++){
 			//System.out.print(".");
 			int currentLabel = data.get(i).getLabel();
-			sumXvalues[currentLabel] +=  data.get(i).getX();
-			sumYvalues[currentLabel] +=  data.get(i).getY();
-			countCentroidMembers[currentLabel]++; //increment number of datapoints assigned to given centroid
+			sumXvalues[currentLabel] +=  (data.get(i).getX() * data.get(i).getPopulation()); //increment sum of exes by x at given zipcode and multiply by number of people lives there (as each point is one person)
+			sumYvalues[currentLabel] +=  (data.get(i).getY() * data.get(i).getPopulation());
+			countCentroidMembers[currentLabel] += data.get(i).getPopulation(); //increment number of datapoints assigned to given centroid by number of people that lives there
 		}
-		//System.out.println("setting new centroid values");
 		//set new values for each centroid
 		for(int centrIdx = 0; centrIdx < k; centrIdx ++){
 			if(countCentroidMembers[centrIdx] != 0){
 				//System.out.println("centroid " + centrIdx + " adjusted");
 				centroids[centrIdx].setX(sumXvalues[centrIdx]/countCentroidMembers[centrIdx]);
 				centroids[centrIdx].setY(sumYvalues[centrIdx]/countCentroidMembers[centrIdx]);
-			}
+			}			
 		}
 	}
 
-	//assign centroids random starting value in the range of min X and max X and for Y in range of min Y and max Y
-	private void setCentroidsInitialValues(double minX, double minY, double maxX, double maxY){
-		double intervalX = maxX - minX;
-		double intervalY = maxY - minY;
-		Random ranX = new Random();
-		Random ranY = new Random();
-		//iterate over list of centroids and assign them random value in the range givenin parameters
-		for(int i = 0; i < k; i++){
-			centroids[i].setX(minX + ranX.nextDouble() * intervalX );
-			centroids[i].setY(minY + ranY.nextDouble() * intervalY );
-		}
-	}
-
+	
 	private void intializeDataLabels(){
 		//go through whole data and set labels roughly evenly
 		int currentLabel = 0;
@@ -184,40 +174,43 @@ public class Kmeans {
 			if(currentLabel >= k) currentLabel = 0; //wrap around
 		}
 	}
-
+	
 	private double distanceToCentroid(DataPoint curPoint, int centroidNum){
 		return calculateDistance(curPoint.getX(), curPoint.getY(), centroids[centroidNum].getX(), centroids[centroidNum].getY());
 	}
-
+	
 	//This method calculates Intercluster Variability (IV) 
 	public double getIV(){
 		double result =0;
-		//for each cluster clust sum the distances from points that belong to this cluster to cluster centroid and sum the results
+		//for each cluster clust sum the distances from points that belong to this cluster to cluster centroid and sum all the results
 		for(int clust = 0; clust < k; clust++){
 			for(int idx = 0; idx < sizeOfData; idx++){
-				if(data.get(idx).getLabel() == clust) result += distanceToCentroid(data.get(idx), clust);
-			}
-
+				if(data.get(idx).getLabel() == clust) result += (distanceToCentroid(data.get(idx), clust) * data.get(idx).getPopulation());
+			}			
 		}
-		return result;
+		return result;		
 	}
-
+	
 	//This method calculates Extracluster Variability (EV) 
 	public double getEV(){
 		double result = 0;
 		//EV = (1/n) sigma(i) sigma(j) dirac C(xi)≠C(xj))d(xi,xj)
+		long totalPopulation = 0;
 		//sum distances of elements from different clusters
 		for(int i = 0; i < sizeOfData; i ++) {
+			long curPopulation = data.get(i).getPopulation();
+			totalPopulation += curPopulation;
 			for(int j = i+1; j < sizeOfData; j++){
-				if(data.get(i).getLabel() != data.get(j).getLabel())
-					result +=calculateDistance(data.get(i).getX(), data.get(i).getY(), data.get(j).getX(), data.get(j).getY());
+				if(data.get(i).getLabel() != data.get(j).getLabel()) 
+					result += (calculateDistance(data.get(i).getX(), data.get(i).getY(), data.get(j).getX(), data.get(j).getY())* curPopulation);
 			}
 		}
 		//divide result by number of elements
-		return result/sizeOfData;
+		long n = sizeOfData * totalPopulation;
+		return result/n;
 
 	}
-
+	
 	private double calculateDistance(double x1, double y1, double x2, double y2){
 		//calculate interval distance for each x and y between two points
 		double intervalX = Math.abs(x1 - x2);
@@ -226,22 +219,23 @@ public class Kmeans {
 		double result = Math.sqrt(intervalX*intervalX + intervalY*intervalY ) ;// a^2 + b^2 = c^2 => square root of (a^2 + b^2) = c, which is our distance
 		return result;
 	}
-
+	
 	private int countCentroidMembers(int cent){
 		int result = 0;
 		for(int i=0; i < sizeOfData; i++){
-			if(data.get(i).getLabel() == cent ) result++;
+			if(data.get(i).getLabel() == cent ) result+=data.get(i).getPopulation();
 		}
 		return result;
 	}
-
+	
 	public int getOptimumK(){ return optimumK;	}
-
+	
 	//Calculates optimum k by minimizing IV/EV
 	//returns array of elements where index = k, and value under this index = IV/EV
 	public double[] calculateOptimumK(){
 		double minIVEV = 99999999;
 		double [] results = new double[MAXK+1];
+		if(sizeOfData == 0 ) return results; //if no data then return empty strings
 		for(int idx = MINK; idx <= MAXK; idx++){
 			//change parameters to run K-mean on k = idx value
 			k = idx;
@@ -260,10 +254,11 @@ public class Kmeans {
 		}
 		return results;
 	}
-
+	
 	//set optimum k and calculate data for graph for the elbow method, where x axis will be k values and y axis SSE
 	public double[] calculateElbowMethod(){
 		double [] results = new double[MAXK+1];
+		if(data.size() == 0 ) return results; //if no data then return empty strings
 		//Calculate Sum of Square Error for values of k
 		for( int curK = MINK; curK <= MAXK; curK++){
 			//change parameters to run K-mean on k = idx value
@@ -274,7 +269,7 @@ public class Kmeans {
 			//calculate SSE and enter it into results array under current k value of index
 			results[curK] = getSSE();
 		}
-
+		
 		//find the max elbow and set its value to optimum k value
 		double curDiff, prevDiff, maxElbow = 0;
 		for(int i = MINK; i < results.length-1; i++){
@@ -286,18 +281,18 @@ public class Kmeans {
 			}
 		}
 		return results;
-
+		
 	}
-
+	
 	private double getSSE(){
 		double result = 0;
 		//go through all data points and sum the squared distance between point and its centroid 
 		for( int i = 0; i < sizeOfData; i++){
 			int curClusterNum = data.get(i).getLabel();
-			double dist = calculateDistance(data.get(i).getX(), data.get(i).getY(), centroids[curClusterNum].getX(), centroids[curClusterNum].getY());
-			result += (dist * dist);
+			double dist = calculateDistance(data.get(i).getX(), data.get(i).getY(), centroids[curClusterNum].getX(), centroids[curClusterNum].getY()); 
+			result += (dist * dist)*data.get(i).getPopulation();			
 		}
-
+		
 		return result;
 	}
 }
