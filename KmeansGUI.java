@@ -10,22 +10,27 @@
  */
 
 import javax.swing.*;
+
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.TextArea;
 
 class KmeansGUI extends JFrame {
 
-    static JButton run = new JButton("Run");
-    static JButton findMin = new JButton("Find Optimal K Minimum Method");
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	static JButton run = new JButton("Run");
+    static JButton findMin = new JButton("Find Optimal K minimum IV/EV Method");
     static JButton findElbow = new JButton("Find Optimal K Elbow Method");
     static JButton selectAll = new JButton("Select All");
     static JButton deselectAll = new JButton("Deselect All");
     static JPanel button = new JPanel();
     static JPanel select = new JPanel(new FlowLayout());
     static JPanel outer = new JPanel(new BorderLayout());
-    static JComboBox selectAge;
-    static JComboBox selectK;
+    static JComboBox<String> selectAge;
+    static JComboBox<String> selectK;
     static TextArea display = new TextArea();
     static JTable check;
 
@@ -67,9 +72,13 @@ class KmeansGUI extends JFrame {
 
     public void createSelectPanel() {
         String[] age = {"Under 5 years", "5 to 9 years", "10 to 14 years", "15 to 19 years", "20 to 24 years", "25 to 29 years", "30 to 34 years", "35 to 39 years", "40 to 44 years", "45 to 49 years", "50 to 54 years", "55 to 59 years", "60 to 64 years", "65 to 69 years", "70 to 74 years", "75 to 79 years", "80 to 84 years", "85 years and over"};
-        String[] k = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60", "61", "62", "63", "64", "65", "66", "67", "68", "69", "70", "71", "72", "73", "74", "75", "76", "77", "78", "79", "80", "81", "82", "83", "84", "85", "86", "87", "88", "89", "90", "91", "92", "93", "94", "95", "96", "97", "98", "99", "100"};
-        selectAge = new JComboBox(age);
-        selectK = new JComboBox(k);
+        int mink =2; //minimum value of k
+        int maxk =100; //maximum value of k
+        String[] k = new String[maxk - mink+1];
+        for(int i = 0; i < k.length; i++) k[i] = String.valueOf(i+mink);
+        //String[] k = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60", "61", "62", "63", "64", "65", "66", "67", "68", "69", "70", "71", "72", "73", "74", "75", "76", "77", "78", "79", "80", "81", "82", "83", "84", "85", "86", "87", "88", "89", "90", "91", "92", "93", "94", "95", "96", "97", "98", "99", "100"};
+        selectAge = new JComboBox<String>(age);
+        selectK = new JComboBox<String>(k);
         JLabel ageLabel = new JLabel("Demographic Group");
         JLabel kLabel = new JLabel("Select K");
         ButtonHandler bh = new ButtonHandler();

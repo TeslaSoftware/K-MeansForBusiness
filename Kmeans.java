@@ -1,3 +1,4 @@
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -65,6 +66,12 @@ public class Kmeans {
 	//This method returns string of statistics, which includes centroids IV/EV values and their evaluation
 	public String[] getStatistics(){
 		String [] result = new String[k+3];
+		if(sizeOfData == 0 ) {
+			result[0] = "Please select states";
+			return result; //if no data then return empty
+		}
+		
+		
 		//result[0] stores value IV
 		double IV = getIV();
 		result[0] = "Intercluster Variability (IV) = " + IV;
@@ -75,10 +82,11 @@ public class Kmeans {
 		if(EV !=0) result[2] = "IV/EV = " + (IV/EV); 
 		result[1] = "Extracluster Variability (EV) = " + getEV();
 		//result[i+3] stores the value of centroid i
-				
+		
+		DecimalFormat df = new DecimalFormat("#0.00000");
 		//go through whole list of centroids to get their values
 		for(int i =0; i < k; i++){
-			result[i+3] = "Centroid #"+ i + " hax value x=" + (centroids[i].getX()-180) + " and value y=" + centroids[i].getY() + ". It will reach approximately " + (countCentroidMembers(i)*100) + " people.";
+			result[i+3] = "Centroid #"+ (i+1) + ": \tLatitude=" + df.format(centroids[i].getY()) + "\tlongitude=" + df.format(centroids[i].getX()-180) + " \tProximity " + countCentroidMembers(i) + " people.  \nhttps://www.google.com/maps/preview/@" +   df.format(centroids[i].getY()) + ","  +df.format(centroids[i].getX()-180) + ",10z\n";
 		}
 		
 		
@@ -89,6 +97,7 @@ public class Kmeans {
 	private void selectRanCentroids(){
 		int i =0, j=0;
 		double  x=0, y=0;
+		if(sizeOfData == 0 ) return;
 		//for each centroid set its x and y
 		while(i < k){
 			//pick at random dataPoint from data list and get its x and y values.
@@ -214,7 +223,7 @@ public class Kmeans {
 	private int countCentroidMembers(int cent){
 		int result = 0;
 		for(int i=0; i < sizeOfData; i++){
-			if(data.get(i).getLabel() == cent ) result++;
+			if(data.get(i).getLabel() == cent ) result+=data.get(i).getPopulation();
 		}
 		return result;
 	}
@@ -226,6 +235,7 @@ public class Kmeans {
 	public double[] calculateOptimumK(){
 		double minIVEV = 99999999;
 		double [] results = new double[MAXK+1];
+		if(sizeOfData == 0 ) return results; //if no data then return empty strings
 		for(int idx = MINK; idx <= MAXK; idx++){
 			//change parameters to run K-mean on k = idx value
 			k = idx;
@@ -248,6 +258,7 @@ public class Kmeans {
 	//set optimum k and calculate data for graph for the elbow method, where x axis will be k values and y axis SSE
 	public double[] calculateElbowMethod(){
 		double [] results = new double[MAXK+1];
+		if(data.size() == 0 ) return results; //if no data then return empty strings
 		//Calculate Sum of Square Error for values of k
 		for( int curK = MINK; curK <= MAXK; curK++){
 			//change parameters to run K-mean on k = idx value
