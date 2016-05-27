@@ -7,7 +7,7 @@ public class Centroid {
 	private double x;
 	private double y;
 	
-	public Centroid() {}
+	public Centroid() { }
 	
 	//mutators
 	public void setX(double i) { x = i; }
