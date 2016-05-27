@@ -89,23 +89,27 @@ public class Kmeans {
 	
 	//This methods selects centroids at random
 	private void selectRanCentroids(){
-		double minX, minY, maxX, maxY;
-		//set values of min and max to first element in the list
-		minX = data.get(0).getX();
-		maxX = minX;
-		minY = data.get(0).getY();
-		maxY = minY;
-		
-		//go throught the list of points and find min and max for x and y, skip first one since was used to initialize minX, maxX, minY and maxY
-		for(int i =1; i < sizeOfData; i++){
-			DataPoint currentPoint = data.get(i);
-			if(currentPoint.getX() < minX) minX = currentPoint.getX();  //check if current x is the smallest
-			else if(currentPoint.getX() > maxX) maxX = currentPoint.getX(); //if not then maybe it is the largest
-			if(currentPoint.getY() < minY) minY = currentPoint.getX(); //check if current y is the smallest
-			else if(currentPoint.getY() > maxX) maxX = currentPoint.getX(); //if not the smallest then maybe it is the largest		
-		}
-		//for each centroid select random value between minX and maxX to set value of x for each centroid. Do the same for value y
-		setCentroidsInitialValues(minX, minY, maxX, maxY);		
+		int i =0, j=0;
+		double  x=0, y=0;
+		//for each centroid set its x and y
+		while(i < k){
+			//pick at random dataPoint from data list and get its x and y values.
+			Random ran = new Random();
+			DataPoint currentPoint = data.get(ran.nextInt(sizeOfData));
+			x = currentPoint.getX();
+			y = currentPoint.getY();
+			//check if there is centroid that has those co-ordinates. If not then use them and move to next centroid
+			j=0;
+			while(j < i){
+				if(centroids[i].getX() == x && centroids[i].getY() == y) break;
+				j++;
+			}
+			if(i == j) {
+				centroids[i].setX(x);
+				centroids[i].setY(y);
+				i++;
+			}
+		}	
 	}
 	
 	//This method calculate distances and changes the label if change has occur for given DataPoint
