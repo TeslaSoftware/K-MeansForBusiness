@@ -41,7 +41,7 @@ public class dbLoader {
 			geography = fileScan.next();
 			latitude = Double.parseDouble(fileScan.next());
 			longitude = Double.parseDouble(fileScan.next())+180;
-			for (int i = 0; i < columnNum+3; i++) {
+			for (int i = 1; i < columnNum+2; i++) {
 				fileScan.next();
 			}
 			ageGroupPopulation = Integer.parseInt(fileScan.next());
